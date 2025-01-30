@@ -3,6 +3,7 @@
 .mode column
 
 -- Enable foreign key support
+PRAGMA foreign_key = ON
 
 -- Payment Management Queries
 

@@ -3,7 +3,10 @@
 .mode column
 
 -- Enable foreign key support
+PRAGMA foreign_key = ON
 
+
+CREATE TABLE 
 -- Attendance Tracking Queries
 
 -- 1. Record a member's gym visit
