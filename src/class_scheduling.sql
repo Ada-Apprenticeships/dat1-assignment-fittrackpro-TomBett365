@@ -8,22 +8,31 @@ PRAGMA foreign_key = ON;
 -- Class Scheduling Queries
 
 -- 1. List all classes with their instructors
-SELECT c.class_id, c.name AS class_name, (SELECT first_name || ' ' || last_name
-                                          FROM staff) AS instructor_name
+SELECT c.class_id, c.name AS class_name, s.first_name, s.last_name
 FROM class_schedule cs, staff s
 JOIN classes c ON c.class_id = cs.class_id AND cs.staff_id = s.staff_id;
 
 -- 2. Find available classes for a specific date
--- TODO: Write a query to find available classes for a specific date
+SELECT c.class_id, c.name, cs.start_time, cs.end_time, c.capacity AS available_spots
+FROM class_schedule cs
+JOIN classes c ON c.class_id = cs.class_id;
 
 -- 3. Register a member for a class
--- TODO: Write a query to register a member for a class
+
+--INSERT INTO class_attendance (schedule_id, member_id, attendance_status)
+--VALUES
+--(7, 11, 'Registered');
 
 -- 4. Cancel a class registration
--- TODO: Write a query to cancel a class registration
+DELETE FROM class_attendance
+WHERE schedule_id = 7 AND member_id = 2;
 
 -- 5. List top 5 most popular classes
--- TODO: Write a query to list top 5 most popular classes
+SELECT c.class_id, c.name AS class_name, (SELECT schedule_id, COUNT(*)
+                                          FROM class_attendance  
+                                          GROUP BY schedule_id) AS registration_count 
+FROM class_schedule cs, class_attendance ca, registration_count rc
+JOIN classes c ON c.class_id = cs.class_id AND cs.schedule_id = rc.schedule_id;
 
 -- 6. Calculate average number of classes per member
 -- TODO: Write a query to calculate average number of classes per member
