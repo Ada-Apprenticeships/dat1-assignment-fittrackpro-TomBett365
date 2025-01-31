@@ -3,12 +3,15 @@
 .mode column
 
 -- Enable foreign key support
-PRAGMA foreign_key = ON
+PRAGMA foreign_key = ON;
 
 -- Class Scheduling Queries
 
 -- 1. List all classes with their instructors
--- TODO: Write a query to list all classes with their instructors
+SELECT c.class_id, c.name AS class_name, (SELECT first_name || ' ' || last_name
+                                          FROM staff) AS instructor_name
+FROM class_schedule cs, staff s
+JOIN classes c ON c.class_id = cs.class_id AND cs.staff_id = s.staff_id;
 
 -- 2. Find available classes for a specific date
 -- TODO: Write a query to find available classes for a specific date
