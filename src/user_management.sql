@@ -34,9 +34,9 @@ WHERE rc.registration_count = (SELECT MAX(registration_count)
 );  
 -- 5. Find member with the least class registrations
 SELECT m.member_id, m.first_name, m.last_name, rc.registration_count  
-FROM (SELECT member_id, COUNT(*) AS registration_count  
+FROM (SELECT member_id, COUNT(*) AS registration_count
       FROM class_attendance  
-      GROUP BY member_id) rc  
+      GROUP BY member_id) rc
 
 JOIN members m ON m.member_id = rc.member_id  
 WHERE rc.registration_count = (SELECT MIN(registration_count)  
@@ -46,8 +46,8 @@ WHERE rc.registration_count = (SELECT MIN(registration_count)
 );
 
 -- 6. Calculate the percentage of members who have attended at least one class
-SELECT m.member_id, m.first_name, m.last_name, rc.registration_count
-FROM (SELECT member_id, COUNT(*) AS registration_count
+SELECT COUNT(member_id) AS attendance_member_count
+FROM (SELECT member_id, COUNT(*) AS attendance_count
       FROM class_attendance
-      HAVING attendance_status = 'Attended'
-      GROUP BY member_id) AS rc;
+      WHERE attendance_status = 'Attended'
+      GROUP BY member_id);
