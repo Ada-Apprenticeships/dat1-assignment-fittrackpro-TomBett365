@@ -13,9 +13,17 @@ FROM class_schedule cs, staff s
 JOIN classes c ON c.class_id = cs.class_id AND cs.staff_id = s.staff_id;
 
 -- 2. Find available classes for a specific date
-SELECT c.class_id, c.name, cs.start_time, cs.end_time, c.capacity AS available_spots
-FROM class_schedule cs
-JOIN classes c ON c.class_id = cs.class_id;
+
+SELECT schedule_id, COUNT(*)
+FROM class_attendance  
+GROUP BY schedule_id;
+
+SELECT c.class_id, c.name, cs.start_time, cs.end_time, rc.registration_count, cc.capacity
+FROM classes c, (SELECT schedule_id, COUNT(*) AS registration_count
+                                            FROM class_attendance  
+                                            GROUP BY schedule_id) rc, (SELECT class_id, capacity
+                                                                        FROM classes) cc 
+JOIN class_schedule cs ON rc.schedule_id = cs.schedule_id AND cc.class_id = cs.class_id;
 
 -- 3. Register a member for a class
 
@@ -28,9 +36,9 @@ DELETE FROM class_attendance
 WHERE schedule_id = 7 AND member_id = 2;
 
 -- 5. List top 5 most popular classes
-SELECT c.class_id, c.name AS class_name, (SELECT schedule_id, COUNT(*)
-                                          FROM class_attendance  
-                                          GROUP BY schedule_id) AS registration_count 
+SELECT c.class_id, c.name AS class_name, (SELECT ca.schedule_id, COUNT(*)
+                                          FROM class_attendance ca  
+                                          GROUP BY ca.schedule_id) AS registration_count 
 FROM class_schedule cs, class_attendance ca, registration_count rc
 JOIN classes c ON c.class_id = cs.class_id AND cs.schedule_id = rc.schedule_id;
 
