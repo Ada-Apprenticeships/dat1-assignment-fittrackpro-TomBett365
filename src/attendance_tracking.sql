@@ -15,7 +15,7 @@ PRAGMA foreign_key = ON;
 --(7, 1, datetime('now'))
 
 -- 2. Retrieve a member's attendance history
-SELECT date(check_in_time) AS visit_date, time(check_in_time), time(check_out_time)
+SELECT date(check_in_time) AS visit_date, time(check_in_time) AS check_in_time, time(check_out_time) AS check_out_time
 FROM attendance
 WHERE member_id = 5;
 
@@ -46,4 +46,3 @@ ORDER BY visit_count DESC
 LIMIT 1;
 
 -- 4. Calculate the average daily attendance for each location
--- TODO: Write a query to calculate the average daily attendance for each location

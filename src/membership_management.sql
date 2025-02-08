@@ -27,6 +27,19 @@ JOIN no_sessions ns ON ns.schedule_id = dc.schedule_id;
 
 
 -- 2. Calculate the average duration of gym visits for each membership type
+
+SELECT ns.member_id, ns.no_sessions_per_member, AVG(no_sessions_per_member * duration_classes) AS avg_duration
+FROM (SELECT member_id, schedule_id, COUNT(*) AS no_sessions_per_member
+                        FROM class_attendance
+                        WHERE attendance_status = 'Attended'
+                        GROUP BY member_id) ns,
+        (SELECT schedule_id, AVG(ROUND((julianday(end_time) - julianday(start_time)) * 24 * 60)) AS duration_classes
+                        FROM class_schedule
+                        GROUP BY schedule_id) dc
+JOIN no_sessions ns ON ns.schedule_id = dc.schedule_id;
+
+
+
 SELECT m.membership_type, (SELECT AVG(duration)
                             FROM average_duration ad
                             GROUP BY member_id)
