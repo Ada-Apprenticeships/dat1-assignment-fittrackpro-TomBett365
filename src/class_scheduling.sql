@@ -43,4 +43,8 @@ FROM class_schedule cs, class_attendance ca, registration_count rc
 JOIN classes c ON c.class_id = cs.class_id AND cs.schedule_id = rc.schedule_id;
 
 -- 6. Calculate average number of classes per member
--- TODO: Write a query to calculate average number of classes per member
+
+SELECT AVG(classes_per_member) AS average_classes_per_member
+FROM (SELECT member_id, COUNT(*) AS classes_per_member
+      FROM class_attendance
+      GROUP BY member_id);
