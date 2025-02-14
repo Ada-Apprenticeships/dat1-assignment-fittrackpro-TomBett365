@@ -42,16 +42,16 @@ FROM (SELECT *, strftime('%w', check_in_time) AS index_value
       FROM attendance) a
 JOIN day_of_week d ON a.index_value = d.index_value
 GROUP BY day_of_week
-ORDER BY visit_count DESC;
+ORDER BY visit_count DESC
+LIMIT 1;
 
 -- 4. Calculate the average daily attendance for each location
-
-SELECT l.name, AVG(vc.visit_count) AS avg_daily_attendance
-FROM (SELECT COUNT(a.index_value) AS visit_count, a.location_id
-      FROM (SELECT *, strftime('%w', check_in_time) AS index_value
+SELECT l.name, AVG(visit_count) AS avg_daily_attendance
+FROM (SELECT d.day_of_week, COUNT(a.index_value) AS visit_count, a.location_id
+      FROM (SELECT *, strftime('%w', check_in_time) AS index_value, location_id
             FROM attendance) a
       JOIN day_of_week d ON a.index_value = d.index_value
-      GROUP BY location_id
+      GROUP BY day_of_week
       ORDER BY visit_count DESC) vc
-JOIN locations l ON vc.location_id = l.location_id
-GROUP BY l.name; 
+JOIN locations l ON l.location_id = vc.location_id
+GROUP BY name;

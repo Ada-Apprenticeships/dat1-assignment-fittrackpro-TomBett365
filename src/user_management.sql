@@ -46,7 +46,6 @@ WHERE rc.registration_count = (SELECT MIN(registration_count)
 );
 
 -- 6. Calculate the percentage of members who have attended at least one class
-
 SELECT (CAST(attendance_member_count AS FLOAT) / member_count * 100) AS percentage_members
 FROM (SELECT COUNT(member_id) AS attendance_member_count, (SELECT COUNT(member_id) AS member_count
                                                            FROM members) AS member_count
