@@ -25,11 +25,13 @@ INSERT INTO payments (
 -- 2. Calculate total revenue from membership fees for each month of the last year
 DROP TABLE IF EXISTS months;
 
+-- Creates table 'months' to allow day of week to be determined from index value
 CREATE TABLE months (
     month_index INTEGER PRIMARY KEY CHECK (month_index BETWEEN 1 AND 12), 
     month_name VARCHAR(9) NOT NULL
 );
 
+-- Insert each month along with its corresponding index value into table
 INSERT INTO months (month_index, month_name) VALUES
     (1, 'January'),
     (2, 'February'),
@@ -44,9 +46,9 @@ INSERT INTO months (month_index, month_name) VALUES
     (11, 'November'),
     (12, 'December');
 
-SELECT  
-    strftime('%m', p.payment_date) AS month,  
-    SUM(p.amount) AS total_revenue  
+SELECT
+    strftime('%m', payment_date) AS month,  -- Extracts index value for month from payment date
+    SUM(amount) AS total_revenue  -- Sums the amount paid for each month
 FROM  
     payments p
 GROUP BY 
@@ -55,12 +57,12 @@ ORDER BY
     month;
 
 -- 3. Find all day pass purchases
-SELECT 
+SELECT -- Selects payment id, amount, payment date and payment method from payments table
     payment_id, 
     amount, 
     payment_date, 
     payment_method
 FROM 
     payments
-WHERE 
+WHERE -- Only selects records where payment type is 'Day Pass'
     payment_type = 'Day pass';
