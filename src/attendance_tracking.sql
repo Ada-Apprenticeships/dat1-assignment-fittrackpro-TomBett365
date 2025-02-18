@@ -8,7 +8,12 @@ PRAGMA foreign_key = ON;
 
 -- Attendance Tracking Queries
 
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
 -- 1. Record a member's gym visit
+
+
 INSERT INTO attendance (member_id, location_id, check_in_time)
 VALUES
     (7, 1, datetime('now'));  -- Insert a record indicating member 7 checked in at location 1 with the current date and time
@@ -16,8 +21,9 @@ VALUES
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 
-
 -- 2. Retrieve a member's attendance history
+
+
 SELECT 
     DATE(check_in_time) AS visit_date,    -- Extracts the date part from the check_in_time
     TIME(check_in_time) AS check_in_time, -- Extracts the time part from the check_in_time
@@ -30,8 +36,9 @@ WHERE
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 
-
 -- 3. Find the busiest day of the week based on gym visits
+
+
 DROP TABLE IF EXISTS day_of_week;
 
 -- Creates the 'day_of_week' table to store each day with its corresponding index value (0 = Sunday, ..., 6 = Saturday)
@@ -74,8 +81,9 @@ LIMIT 1;  -- Limit the result to the single day with the highest visit count
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 
-
 -- 4. Calculate the average daily attendance for each location
+
+
 SELECT 
     l.name, 
     AVG(vc.visit_count) AS avg_daily_attendance  -- Calculate the average daily attendance from 'vc' table

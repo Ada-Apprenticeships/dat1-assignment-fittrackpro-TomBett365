@@ -7,20 +7,29 @@ PRAGMA foreign_key = ON;
 
 -- Membership Management Queries
 
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
 -- 1. List all active memberships
+
+
 SELECT 
     m.member_id,
     m.first_name,
     m.last_name,
-    ms.type AS membership_type,
+    ms.type AS membership_type,  -- Select and alias the membership type for clarity in the result set
     m.join_date
 FROM 
     members m
 JOIN 
-    memberships ms ON m.member_id = ms.member_id; -- Performs an inner join on the members and memberships tables using member_id as the key
+    memberships ms ON m.member_id = ms.member_id;  -- Join members with memberships to link membership types to members
 
+
+-----------------------------------------------------------------------------------------------------------------------------------------
     
 -- 2. Calculate the average duration of gym visits for each membership type
+
+
 SELECT 
     membership_type,
     AVG(
@@ -75,7 +84,12 @@ FROM
 GROUP BY 
     membership_type; -- Groups the final average calculations by membership type
 
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
 -- 3. Identify members with expiring memberships this year
+
+
 SELECT 
     m.member_id, r
     m.first_name, 
