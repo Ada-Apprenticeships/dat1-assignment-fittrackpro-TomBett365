@@ -22,7 +22,12 @@ SELECT
 FROM 
     members m
 JOIN 
-    memberships ms ON m.member_id = ms.member_id;  -- Join members with memberships to link membership types to members
+    (SELECT 
+        *
+     FROM 
+        memberships
+     WHERE 
+        status = 'Active') AS ms ON m.member_id = ms.member_id;  -- Join members with memberships to link membership types to members
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------

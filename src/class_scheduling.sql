@@ -49,8 +49,7 @@ LEFT JOIN
      FROM 
         class_attendance  
      GROUP BY 
-        schedule_id) rc ON rc.schedule_id = cs.schedule_id  -- Left join to include all class schedules even if no registrations exist
-
+        schedule_id) rc ON rc.schedule_id = cs.schedule_id;  -- Left join to include all class schedules even if no registrations exist
 
 ----------------------------------------------------------------------------------------------------------------------------
 
@@ -83,7 +82,7 @@ SELECT
 FROM 
     classes c
 JOIN 
-    class_schedule cs ON c.class_id = cs.class_id  -- Join classes with their schedules
+    class_schedule cs ON c.class_id = cs.class_id -- Join classes with their schedules
 JOIN 
     (
         SELECT 
