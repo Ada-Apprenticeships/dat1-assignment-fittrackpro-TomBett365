@@ -31,7 +31,7 @@ CREATE TABLE months (
     month_name VARCHAR(9) NOT NULL
 );
 
--- Insert each month along with its corresponding index value into table
+-- Insert each month along with its corresponding index value into table 'months'
 INSERT INTO months (month_index, month_name) VALUES
     (1, 'January'),
     (2, 'February'),
@@ -57,7 +57,7 @@ ORDER BY
     month;
 
 -- 3. Find all day pass purchases
-SELECT -- Selects payment id, amount, payment date and payment method from payments table
+SELECT
     payment_id, 
     amount, 
     payment_date, 
