@@ -9,22 +9,30 @@ PRAGMA foreign_key = ON;
 
 -- 1. Retrieve all members
 SELECT
-    member_id, 
-    first_name, 
-    last_name, 
-    email, 
-    join_date
+    member_id,     -- Unique identifier for each member
+    first_name,    -- First name of the member
+    last_name,     -- Last name of the member
+    email,         -- Email address of the member
+    join_date      -- Date when the member joined
 FROM 
-    members;
+    members;       -- Retrieve data from the 'members' table
+
 
 -- 2. Update a member's contact information
 UPDATE members
-SET email = 'emily.jones.updated@email.com', phone_number = '555-9876'
-WHERE member_id = 5;
+SET 
+    email = 'emily.jones.updated@email.com',  -- Update the email address for the specified member
+    phone_number = '555-9876'                 -- Update the phone number for the specified member
+WHERE 
+    member_id = 5;                            -- Target the member with ID 5
+
 
 -- 3. Count total number of members
-SELECT COUNT(member_id) AS member_count
-FROM members;
+SELECT 
+    COUNT(member_id) AS member_count  -- Count the total number of members and alias the result as member_count
+FROM 
+    members;                          -- Retrieve the count from the 'members' table
+
 
 -- 4. Find member with the most class registrations
 SELECT
@@ -36,29 +44,31 @@ FROM
     (
         SELECT 
             member_id,
-            COUNT(*) AS registration_count -- Counts all those registered in class attendance table and stores value as 'registration_count'
+            COUNT(*) AS registration_count  -- Count registrations in the class_attendance table and store as 'registration_count'
         FROM 
             class_attendance
         GROUP BY 
-            member_id -- Group by member id to give the corresponding registration count for each member
+            member_id                       -- Group by member_id to count registrations for each member
+    ) AS rc
 JOIN 
-    members m -- Joins members table on member id from 'rc' table 
+    members m                              -- Join with members table
 ON 
-    m.member_id = rc.member_id
-WHERE -- Only joins records where the registration count is equal to the MAXIMUM registration count
+    m.member_id = rc.member_id             -- Using member_id to match records between subquery and members table
+WHERE 
     rc.registration_count = (
         SELECT 
-            MAX(registration_count)
+            MAX(registration_count)        -- Subquery to find the maximum registration count
         FROM 
             (
                 SELECT 
-                    COUNT(*) AS registration_count
+                    COUNT(*) AS registration_count  -- Count registrations again in a separate subquery
                 FROM 
                     class_attendance
                 GROUP BY 
-                    member_id
+                    member_id                        -- Group by member_id to get counts for each member
             ) AS registration_counts
-    );
+    );                                      -- Filter to include only those members with the maximum registration count
+
 
 -- 5. Find member with the least class registrations
 SELECT
@@ -70,54 +80,56 @@ FROM
     (
         SELECT 
             member_id,
-            COUNT(*) AS registration_count -- Counts all those registered in class attendance table and stores value as 'registration_count'
+            COUNT(*) AS registration_count  -- Count registrations in the class_attendance table and alias as 'registration_count'
         FROM 
             class_attendance
         GROUP BY 
-            member_id -- Group by member id to give the corresponding registration count for each member
+            member_id                        -- Group by member_id to compute registration count for each member
     ) AS rc
 JOIN 
-    members m -- Joins members table on member id from 'rc' table 
+    members m                                -- Join with the members table
 ON 
-    m.member_id = rc.member_id
-WHERE -- Only joins records where registration count is equal to the MINIMUM count
+    m.member_id = rc.member_id               -- Match records between subquery and members table using member_id
+WHERE 
+                                             -- Filter for records where the registration count is the minimum
     rc.registration_count = (
         SELECT 
-            MIN(registration_count)
+            MIN(registration_count)          -- Subquery to find the minimum registration count
         FROM 
             (
                 SELECT 
-                    COUNT(*) AS registration_count
+                    COUNT(*) AS registration_count  -- Count registrations for each member again in a separate subquery
                 FROM 
                     class_attendance
                 GROUP BY 
-                    member_id
+                    member_id                        -- Group by member_id to get registration counts
             ) AS registration_counts
     );
 
+
 -- 6. Calculate the percentage of members who have attended at least one class
-SELECT -- Takes 2 implicit tables (member count and attendance count) and divides one by the other and multiplies by 100 to get the percentage
-    (CAST(attendance_member_count AS FLOAT) / member_count * 100) AS percentage_members
+SELECT
+    (CAST(attendance_member_count AS FLOAT) / member_count * 100) AS percentage_members  -- Calculate and select percentage of members who attended
 FROM 
     (
-        SELECT -- Counts individual members from members table and stores value as 'attendance_member_count'
-            COUNT(member_id) AS attendance_member_count, 
+        SELECT
+            COUNT(member_id) AS attendance_member_count,  -- Count unique members who attended at least one class
             (
                 SELECT 
-                    COUNT(member_id) 
+                    COUNT(member_id)  
                 FROM 
                     members
-            ) AS member_count
+            ) AS member_count  -- Total number of members in the members table
         FROM 
             (
-                SELECT -- Counts members who have attended at least one class and stores value as 'attendance_count'
+                SELECT
                     member_id, 
-                    COUNT(*) AS attendance_count
+                    COUNT(*) AS attendance_count  -- Count total attendance instances per member
                 FROM 
                     class_attendance
                 WHERE 
-                    attendance_status = 'Attended'
+                    attendance_status = 'Attended'  -- Consider only records where attendance status is 'Attended'
                 GROUP BY
-                    member_id
+                    member_id  -- Group by member_id to get attendance counts per member
             ) AS attendance_count
     );
