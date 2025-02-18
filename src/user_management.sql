@@ -7,7 +7,12 @@ PRAGMA foreign_key = ON;
 
 -- User Management Queries
 
+
+---------------------------------------------------------------------------------------------------------------------------
+
 -- 1. Retrieve all members
+
+
 SELECT
     member_id,     -- Unique identifier for each member
     first_name,    -- First name of the member
@@ -18,7 +23,11 @@ FROM
     members;       -- Retrieve data from the 'members' table
 
 
+-----------------------------------------------------------------------------------------------------------------------------
+
 -- 2. Update a member's contact information
+
+
 UPDATE members
 SET 
     email = 'emily.jones.updated@email.com',  -- Update the email address for the specified member
@@ -27,14 +36,22 @@ WHERE
     member_id = 5;                            -- Target the member with ID 5
 
 
+-----------------------------------------------------------------------------------------------------------------------------
+
 -- 3. Count total number of members
+
+
 SELECT 
     COUNT(member_id) AS member_count  -- Count the total number of members and alias the result as member_count
 FROM 
     members;                          -- Retrieve the count from the 'members' table
 
 
+-----------------------------------------------------------------------------------------------------------------------------
+
 -- 4. Find member with the most class registrations
+
+
 SELECT
     m.member_id, 
     m.first_name, 
@@ -70,7 +87,11 @@ WHERE
     );                                      -- Filter to include only those members with the maximum registration count
 
 
+-----------------------------------------------------------------------------------------------------------------------------
+
 -- 5. Find member with the least class registrations
+
+
 SELECT
     m.member_id, 
     m.first_name, 
@@ -107,7 +128,11 @@ WHERE
     );
 
 
+----------------------------------------------------------------------------------------------------------------------------
+
 -- 6. Calculate the percentage of members who have attended at least one class
+
+
 SELECT
     (CAST(attendance_member_count AS FLOAT) / member_count * 100) AS percentage_members  -- Calculate and select percentage of members who attended
 FROM 

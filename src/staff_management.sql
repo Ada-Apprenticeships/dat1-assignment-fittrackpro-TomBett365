@@ -7,7 +7,12 @@ PRAGMA foreign_key = ON;
 
 -- Staff Management Queries
 
+
+---------------------------------------------------------------------------------------------------------------
+
 -- 1. List all staff members by role
+
+
 SELECT 
     staff_id, 
     first_name, 
@@ -18,7 +23,12 @@ FROM
 ORDER BY 
     role;             -- Order the results by the 'role' column (formerly 'position')
 
+
+---------------------------------------------------------------------------------------------------------------
+
 -- 2. Find trainers with one or more personal training session in the next 30 days
+
+
 SELECT 
     s.staff_id AS trainer_id,      -- Alias staff_id as trainer_id for clarity
     s.first_name || ' ' || s.last_name AS trainer_name,  -- Concatenate first and last name to create trainer_name

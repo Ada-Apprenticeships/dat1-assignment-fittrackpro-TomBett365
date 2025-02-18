@@ -7,7 +7,12 @@ PRAGMA foreign_key = ON;
 
 -- Payment Management Queries
 
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
 -- 1. Record a payment for a membership
+
+
 INSERT INTO payments (
     member_id,
     amount,
@@ -22,7 +27,12 @@ INSERT INTO payments (
     'Monthly membership fee'
 );
 
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
 -- 2. Calculate total revenue from membership fees for each month of the last year
+
+
 DROP TABLE IF EXISTS months;
 
 -- Creates table 'months' to allow day of week to be determined from index value
@@ -56,7 +66,12 @@ GROUP BY
 ORDER BY
     month;                                  -- Order results chronologically by month
 
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 -- 3. Find all day pass purchases
+
+
 SELECT
     payment_id, 
     amount, 
