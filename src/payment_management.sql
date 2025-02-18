@@ -47,14 +47,14 @@ INSERT INTO months (month_index, month_name) VALUES
     (12, 'December');
 
 SELECT
-    strftime('%m', payment_date) AS month,  -- Extracts index value for month from payment date
-    SUM(amount) AS total_revenue  -- Sums the amount paid for each month
+    strftime('%m', payment_date) AS month,  -- Extract month component from the payment_date
+    SUM(amount) AS total_revenue            -- Calculate total revenue for each month
 FROM  
     payments p
 GROUP BY 
-    month
+    month                                   -- Group results by month to aggregate revenue
 ORDER BY
-    month;
+    month;                                  -- Order results chronologically by month
 
 -- 3. Find all day pass purchases
 SELECT
@@ -64,5 +64,5 @@ SELECT
     payment_method
 FROM 
     payments
-WHERE -- Only selects records where payment type is 'Day Pass'
-    payment_type = 'Day pass';
+WHERE 
+    payment_type = 'Day pass';  -- Filter to select records where payment type is 'Day pass'
