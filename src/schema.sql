@@ -38,6 +38,8 @@ DROP TABLE IF EXISTS payments;
 DROP TABLE IF EXISTS personal_training_sessions;
 DROP TABLE IF EXISTS member_health_metrics;
 DROP TABLE IF EXISTS equipment_maintenance_log;
+DROP TABLE IF EXISTS months;
+DROP TABLE IF EXISTS day_of_week;
 
 -- 'locations' table
 CREATE TABLE locations (
