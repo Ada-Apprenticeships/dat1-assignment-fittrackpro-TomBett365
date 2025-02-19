@@ -85,7 +85,7 @@ LIMIT 1;  -- Limit the result to the single day with the highest visit count
 
 
 SELECT 
-    l.name, 
+    l.name AS location_name, 
     AVG(vc.visit_count) AS avg_daily_attendance  -- Calculate the average daily attendance from 'vc' table
 FROM 
     (
