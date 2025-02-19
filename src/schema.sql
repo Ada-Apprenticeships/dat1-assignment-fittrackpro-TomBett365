@@ -150,7 +150,7 @@ CREATE TABLE payments (
     amount DECIMAL(10, 2),  -- Payment amount with two decimal places
     payment_date DATE,  -- Date when the payment was made
     payment_method VARCHAR(40) CHECK(payment_method IN ('Credit Card', 'Bank Transfer', 'PayPal', 'Cash')),  -- Valid payment methods
-    payment_type VARCHAR(40) CHECK(payment_type IN('Day Pass', 'Monthly membership fee')),  -- Valid payment types
+    payment_type VARCHAR(40) CHECK(payment_type IN('Day pass', 'Monthly membership fee')),  -- Valid payment types
     FOREIGN KEY (member_id) REFERENCES members(member_id)  -- Maintain referential integrity with the 'members' table
 ); 
   
